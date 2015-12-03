@@ -1,0 +1,52 @@
+var React = require("react");
+
+var titleStyle = {
+
+  color: 'white',
+  padding: '60px',
+  fontSize: '40px',
+  fontFamily: 'Arial Black'
+};
+
+var textTitleStyle = {
+
+  color: 'RoyalBlue',
+ 
+  fontSize: '30px',
+  fontFamily: 'Comic Sans MS'
+};
+
+var textTitleStyle = {
+
+  color: 'RoyalBlue',
+ 
+  fontSize: '30px',
+  fontFamily: 'Comic Sans MS'
+};
+
+var textStyle = {
+
+  color: 'RoyalBlue',
+  paddingTop: '10px',
+  fontSize: '15px',
+  fontFamily: 'Comic Sans MS'
+};
+
+var logoStyle = {
+  color: 'white',
+  backgroundImage: 'url(' + 'https://upload.wikimedia.org/wikipedia/commons/0/0a/Blue_sky_south_of_France.jpg' + ')',
+  WebkitTransition: 'all', // note the capital 'W' here
+  msTransition: 'all', // 'ms' is the only lowercase vendor prefix
+  height: '180px'
+
+};
+
+var homeNavStyle = {
+
+  fontSize: '20px',
+};
+
+var buttonStyle = {
+  padding: '5px',
+
+};

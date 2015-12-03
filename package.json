@@ -1,0 +1,26 @@
+{
+  "name": "game-utilities-app",
+  "version": "1.0.0",
+  "description": "Website containing several useful game utilities",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordanchip/game-utilities-app.git"
+  },
+  "keywords": [
+    "game",
+    "utilities",
+    "dice",
+    "tournament",
+    "bracket"
+  ],
+  "author": "jordanchip, glubeck, cjonghyun",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jordanchip/game-utilities-app/issues"
+  },
+  "homepage": "https://github.com/jordanchip/game-utilities-app#readme"
+}

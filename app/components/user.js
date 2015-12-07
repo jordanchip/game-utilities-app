@@ -47,12 +47,12 @@ userSchema.statics.verifyToken = function(token,cb) {
             return;
         }
         User.findOne({username: decoded.username},function(err,user) {
-	    if (err) {
-		cb(null);
-	    } else {
-		cb(user);
-	    }
-	});
+        if (err) {
+        cb(null);
+        } else {
+        cb(user);
+        }
+    });
     });
 };
 

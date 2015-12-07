@@ -8,6 +8,9 @@ var hideButtonStyle = {
 var showButtonStyle = {
   visibility: 'visible'
 }
+var bracketStyle = {
+  color: 'black'
+}
 
 var minimalData = {
     teams : [
@@ -19,6 +22,14 @@ var minimalData = {
       [[4,6], [2,1]]        /* second round */
     ]
   };
+
+var emptyData = {
+  teams : [
+    ['',''],
+    ['','']
+  ],
+  results : []
+};
 
 var Tournament = React.createClass({
   // componentDidMount: function() {
@@ -50,15 +61,25 @@ var Tournament = React.createClass({
     // var data = container.bracket('data')
     // $('#dataOutput').text(jQuery.toJSON(data))
 
-    $('.list-group').bracket({
-      init: minimalData,
+    $('.bracket').bracket({
+      init: emptyData,
       save: function(){}
     })
+
+    // $('.bracket').effect("size", {
+    //     to: { width: 00, height: 500 }
+    // }, 10000 );
+
+    // $('.bracket').animate({
+    //   height: '100px',
+    //   width: '100px'
+    // });
 
     document.getElementById("buttonDiv").style.visibility = 'visible';
   },
 
   componentDidMount: function() {
+    this.displayBracket();
     document.getElementById("buttonDiv").style.visibility = 'hidden';
   },
 
@@ -70,11 +91,7 @@ var Tournament = React.createClass({
     return (
       <div className="container">
         <h2>Tournaments</h2>
-        <div className="list-group">
-          <a className="list-group-item" onClick={this.displayBracket}>First item</a>
-          <a className="list-group-item">Second item</a>
-          <a className="list-group-item">Third item</a>
-        </div>
+        <div className="bracket" style={bracketStyle}></div>
         <div id="buttonDiv">
 
           <Button

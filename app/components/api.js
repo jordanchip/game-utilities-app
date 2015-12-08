@@ -113,6 +113,32 @@ var api = {
           cb(false, status);
       }
     });
+  },
+
+  addTournament: function(title1, data, cb) {
+    var url = "/api/tournaments/" + data.id;
+    $.ajax({
+      url: url,
+      type: 'application/json',
+      data: JSON.stringify({
+        item: {
+          title: title1,
+          data: data
+        }
+      }),
+      type: 'POST',
+      headers: {'Authorization': localStorage.token},
+      success: function(res) {
+        if (cb)
+          cb(true, res);
+      },
+      error: function(xhr, status, err) {
+        // if there is an error, remove the login token
+        delete localStorage.token;
+        if (cb)
+          cb(false, status);
+      }
+    })
   }
 
 };

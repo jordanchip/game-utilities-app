@@ -103,6 +103,7 @@ var Ideas = React.createClass({
     var index = i+1;
     element.setAttribute("index", index);
     element.addEventListener("click", function() {
+      console.log(index);
       displayText(element.getAttribute("index"));
     });
     document.getElementById("idealist").appendChild(element);

@@ -1,6 +1,7 @@
 var app = require('./express.js');
 var User = require('./user.js');
 var Item = require('./item.js');
+var Tournament = require('./tournament.js');
 
 // setup body parser
 var bodyParser = require('body-parser');
@@ -15,6 +16,7 @@ app.use(bodyParser.urlencoded({
 
 // register a user
 app.post('/api/users/register', function (req, res) {
+    console.log('Registering user');
     // find or create the user with the given username
     User.findOrCreate({username: req.body.username}, function(err, user, created) {
         if (created) {
@@ -23,6 +25,7 @@ app.post('/api/users/register', function (req, res) {
             user.set_password(req.body.password);
             user.save(function(err) {
 		if (err) {
+            console.log('Houston, problem');
 		    res.sendStatus("403");
 		    return;
 		}
@@ -169,6 +172,24 @@ app.delete('/api/items/:item_id', function (req,res) {
 		}
                 res.sendStatus(200);
             });
+        } else {
+            res.sendStatus(403);
+        }
+    });
+});
+
+app.post('/api/tournaments/', function (req,res) {
+    console.log("Here!");
+    user = User.verifyToken(req.headers.authorization, function(user) {
+        if (user) {
+            // if the token is valid, create the item for the user
+        Tournament.create({title:req.body.item.title,data:req.body.item.data,user:user.id}, function(err,item) {
+        if (err) {
+            res.sendStatus(403);
+            return;
+        }
+        res.json({item:item});
+        });
         } else {
             res.sendStatus(403);
         }

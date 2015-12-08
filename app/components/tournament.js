@@ -1,4 +1,5 @@
 var React = require("react");
+var api = require('./api.js');
 
 var Button = require('react-bootstrap/lib/Button');
 
@@ -41,13 +42,26 @@ var Tournament = React.createClass({
     return { showButton: false };
   },
 
-  saveFn: function(data) {
-    var json = jQuery.toJSON(data);
-    $('#saveOutput').text('POST ' +userData+' '+json);
+  saveFn: function() {
+    var container = $('.bracket');
+    var data = container.bracket('data');
+    api.addTournament("titleTest", data, function(loggedIn) {
+      // login callback
+      if (!loggedIn) {
+        window.alert("failure");
+        return this.setState({
+          error: true
+        });
+      }
+    }.bind(this));
+    //console.log(json);
   },
   displayBracket: function() {
     console.log("Displaying Bracket");
     this.setState({ showButton: true });
+    // document.getElementById("buttonDiv").style.visibility="visible";  
+    // document.getElementById("bracketID").style.visibility="visible";  
+
 
     // $('.list-group').bracket({
     //     init: minimalData /* data to initialize the bracket with */ });
@@ -58,13 +72,14 @@ var Tournament = React.createClass({
     //   userData: "http://myapi"})
  
     // /* You can also inquiry the current data */
-    // var data = container.bracket('data')
     // $('#dataOutput').text(jQuery.toJSON(data))
 
-    $('.bracket').bracket({
+    var container = $('.bracket');
+    container.bracket({
       init: emptyData,
-      save: function(){}
+      save: this.saveFn
     })
+
 
     // $('.bracket').effect("size", {
     //     to: { width: 00, height: 500 }
@@ -91,7 +106,7 @@ var Tournament = React.createClass({
     return (
       <div className="container">
         <h2>Tournaments</h2>
-        <div className="bracket" style={bracketStyle}></div>
+        <div className="bracket" id="bracketID" style={bracketStyle}></div>
         <div id="buttonDiv">
 
           <Button

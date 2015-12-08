@@ -1,5 +1,7 @@
 var React = require('react');
 
+var api = require("./api.js");
+
 var Popover = require('react-bootstrap/lib/Popover');
 var Tooltip = require('react-bootstrap/lib/Tooltip');
 var Button = require('react-bootstrap/lib/Button');
@@ -15,9 +17,15 @@ var textStyle = {
   fontFamily: 'Comic Sans MS'
 };
 
+var ideaArray = [
+{"title":"idea one", "text":"this is a cool idea", "index":"1"}, 
+{"title":"idea two", "text":"this is a cool idea", "index":"2"},  
+{"title":"idea three", "text":"this is a cool idea", "index":"3"} 
+];
+
 var Ideas = React.createClass({
   getInitialState() {
-    ideas: [],
+    //ideas: [],
     return { showModal: false };
   },
 
@@ -29,8 +37,7 @@ var Ideas = React.createClass({
     this.setState({ showModal: true });
   },
 
-  // handle login button submit
-  postIdea: function(event) {
+  addIdea: function(event) {
     // prevent default browser submit
     event.preventDefault();
     // get data from form
@@ -39,26 +46,57 @@ var Ideas = React.createClass({
     if (!title || !text) {
       return;
     }
-    // login via API
-    auth.post(title, text, function(posted) {
-      // login callback
-      if (!posted) {
-        window.alert("failure");
-        return this.setState({
-          error: true
-        });
-      }
-    }.bind(this));
+    // call API to add item, and reload once added
+
+
+    var json = {"title":title, "text":text, "index":ideaArray.length+1};
+
+    ideaArray.push(json);
+
+    var element = document.createElement('a');
+    var textElement = document.createTextNode(title);
+    element.appendChild(textElement);
+    element.setAttribute("class", "list-group-item");
+    element.setAttribute("id", ideaArray.length);
+    document.getElementById("idealist").appendChild(element);
+
+    this.close;
+    //api.post(title, text, this.props.reload);
+    //this.refs.ideaTitle.value = '';
+    //this.refs.ideaText.value = '';
   },
 
   // when the component loads, get the list items
   componentDidMount: function() {
-    api.getIdeas(this.setIdeas);
+    //api.getIdeas();
+
+        var i;
+    for(i = 0; i < ideaArray.length; i++) {
+
+    var element = document.createElement('a');
+    var textElement = document.createTextNode(ideaArray[i].title);
+    element.appendChild(textElement);
+    element.setAttribute("class", "list-group-item");
+    element.setAttribute("id", i+1);
+    document.getElementById("idealist").appendChild(element);
+    }
   },
 
     // reload the list of items
   reload: function() {
-    api.getIdeas(this.setIdeas);
+    //api.getIdeas();
+
+    var i;
+    for(i = 0; i < ideaArray.length; i++) {
+
+    var element = document.createElement('a');
+    var textElement = document.createTextNode(ideaArray[i].title);
+    element.appendChild(textElement);
+    element.setAttribute("class", "list-group-item");
+    element.setAttribute("id", i+1);
+    document.getElementById("idealist").appendChild(element);
+    }
+
   },
 
   // callback for getting the list of items, sets the list state
@@ -74,20 +112,6 @@ var Ideas = React.createClass({
     }
   },
 
-  addIdea: function(event) {
-    // prevent default browser submit
-    event.preventDefault();
-    // get data from form
-    var title = this.refs.ideaTitle.value;
-    var text = this.refs.ideaText.value;
-    if (!title || !text) {
-      return;
-    }
-    // call API to add item, and reload once added
-    api.post(title, text, this.props.reload);
-    this.refs.ideaTitle.value = '';
-    this.refs.ideaText.value = '';
-  },
 
   render() {
 
@@ -102,12 +126,9 @@ var Ideas = React.createClass({
           Post an idea!
         </Button>
 
-      <div className="list-group">
+      <div className="list-group" id="idealist">
       <p></p>
       
-        <a href="#" className="list-group-item">First item</a>
-        <a href="#" className="list-group-item">Second item</a>
-        <a href="#" className="list-group-item">Third item</a>
       </div>
 
         <Modal show={this.state.showModal} onHide={this.close}>
@@ -124,7 +145,7 @@ var Ideas = React.createClass({
               <br/>
               <div className="wrapper">
                 <span className="group-btn">     
-                 <a onClick={postIdea} className="btn btn-primary btn-md">Post <i className="fa fa-sign-in"></i></a>
+                 <a onClick={this.addIdea} className="btn btn-primary btn-md">Post <i className="fa fa-sign-in"></i></a>
                 </span>
               </div>
             </div>
@@ -135,9 +156,20 @@ var Ideas = React.createClass({
             <Button onClick={this.close}>Close</Button>
           </Modal.Footer>
         </Modal>
+
+        
+
       </div>
     );
   }
 }); 
+
+/*var postModal = React.createClass({
+  render() {
+    return (
+
+    );
+  }
+});*/
 
 module.exports = Ideas;

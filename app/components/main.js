@@ -16,6 +16,7 @@ var Register = require("./register.js");
 var Scoreboard = require("./scoreboard.js");
 var Tournament = require("./tournament.js");
 var Dice = require("./dice.js");
+var api = require('./api.js');
 
 // Run the routes
 var routes = (

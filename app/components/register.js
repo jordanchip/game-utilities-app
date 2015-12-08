@@ -12,6 +12,10 @@ var Register = React.createClass({
     };
   },
 
+  componentDidMount: function() {
+    document.getElementById("isvalid").innerHTML = "";
+  },
+
   // handle regiser button submit
   register: function(event) {
     // prevent default browser submit
@@ -26,11 +30,14 @@ var Register = React.createClass({
     // register via the API
     auth.register(name, username, password, function(loggedIn) {
       // register callback
-      if (!loggedIn)
+      if (!loggedIn) {
+         document.getElementById("isvalid").innerHTML = "Invalid username or password.";
         return this.setState({
           error: true
         });
-      this.history.pushState(null, '/list');
+      }
+      else
+         document.getElementById("isvalid").innerHTML = "You have been registered!";
     }.bind(this));
   },
 
@@ -40,16 +47,17 @@ var Register = React.createClass({
         <form role="form">
           <div className="col-md-offset-5 col-md-3">
               <h4>Register to unlock sweet features</h4>
-                <input type="text" ref="name" autoFocus={true} className="form-control input-sm chat-input" placeholder="username" />
+                <input type="text" ref="name" autoFocus={true} className="form-control input-sm chat-input" placeholder="Name" />
               <br/>
-              <input type="text" ref="username" className="form-control input-sm chat-input" placeholder="password" />
+              <input type="text" ref="username" className="form-control input-sm chat-input" placeholder="Username" />
               <br/>
-              <input type="text" ref="password" className="form-control input-sm chat-input" placeholder="password again" />
+              <input type="text" ref="password" className="form-control input-sm chat-input" placeholder="Password" />
               <br/>     
-                <input className="btn btn-primary btn-md" type="submit" value="register"/>
-                {this.state.error ? (
-                 <div className="alert">Invalid username or password.</div>
-                ) : null }
+                <input className="btn btn-primary btn-md" type="submit" onClick={this.register} value="register"/>
+               
+                 <div id="isvalid" className="alert">Invalid username or password.</div>
+                
+                
           </div>
         </form>
       </div>

@@ -17,6 +17,7 @@ var textStyle = {
 
 var Ideas = React.createClass({
   getInitialState() {
+    ideas: [],
     return { showModal: false };
   },
 
@@ -26,6 +27,66 @@ var Ideas = React.createClass({
 
   open() {
     this.setState({ showModal: true });
+  },
+
+  // handle login button submit
+  postIdea: function(event) {
+    // prevent default browser submit
+    event.preventDefault();
+    // get data from form
+    var title = this.refs.ideaTitle.value;
+    var text = this.refs.ideaText.value;
+    if (!title || !text) {
+      return;
+    }
+    // login via API
+    auth.post(title, text, function(posted) {
+      // login callback
+      if (!posted) {
+        window.alert("failure");
+        return this.setState({
+          error: true
+        });
+      }
+    }.bind(this));
+  },
+
+  // when the component loads, get the list items
+  componentDidMount: function() {
+    api.getIdeas(this.setIdeas);
+  },
+
+    // reload the list of items
+  reload: function() {
+    api.getIdeas(this.setIdeas);
+  },
+
+  // callback for getting the list of items, sets the list state
+  setIdeas: function(status, data) {
+    if (status) {
+      // set the state for the list of items
+      this.setState({
+        ideas: data.ideas
+      });
+    } else {
+      // if the API call fails, redirect to the login page
+      this.context.router.transitionTo('/login');
+    }
+  },
+
+  addIdea: function(event) {
+    // prevent default browser submit
+    event.preventDefault();
+    // get data from form
+    var title = this.refs.ideaTitle.value;
+    var text = this.refs.ideaText.value;
+    if (!title || !text) {
+      return;
+    }
+    // call API to add item, and reload once added
+    api.post(title, text, this.props.reload);
+    this.refs.ideaTitle.value = '';
+    this.refs.ideaText.value = '';
   },
 
   render() {
@@ -57,13 +118,13 @@ var Ideas = React.createClass({
            <form role="form">
           <div>
             <div className="form-login">
-                <input type="text" id="ideaTitle" className="form-control input-sm chat-input" placeholder="Title" />
+                <input type="text" ref="ideaTitle" className="form-control input-sm chat-input" placeholder="Title" />
               <br/>
-              <textarea name="ideaEntry" cols="78" rows="10" ></textarea>
+              <textarea ref="ideaText" name="ideaEntry" cols="78" rows="10" ></textarea>
               <br/>
               <div className="wrapper">
                 <span className="group-btn">     
-                 <a href="#" className="btn btn-primary btn-md">Post <i className="fa fa-sign-in"></i></a>
+                 <a onClick={postIdea} className="btn btn-primary btn-md">Post <i className="fa fa-sign-in"></i></a>
                 </span>
               </div>
             </div>

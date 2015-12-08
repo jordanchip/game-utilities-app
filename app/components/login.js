@@ -5,6 +5,7 @@ var auth = require("./auth.js");
 var Login = React.createClass({
 
 
+
   // initial state
   getInitialState: function() {
     return {
@@ -13,6 +14,8 @@ var Login = React.createClass({
     };
 
   },
+
+
 
   // handle login button submit
   login: function(event) {
@@ -27,11 +30,12 @@ var Login = React.createClass({
     // login via API
     auth.login(username, password, function(loggedIn) {
       // login callback
-      if (!loggedIn)
+      if (!loggedIn) {
+        window.alert("failure");
         return this.setState({
           error: true
         });
-      this.history.pushState(null, '/list');
+      }
     }.bind(this));
   },
 
@@ -46,7 +50,7 @@ var Login = React.createClass({
               <br/>
               <input type="password" ref="password" className="form-control input-sm chat-input" placeholder="password" />
               <br/>
-              <input className="btn btn-primary btn-md" type="submit" value="login" />
+              <input className="btn btn-primary btn-md" type="submit" onClick={this.login} value="login" />
               {this.state.error ? (
                   <div className="alert">Invalid username or password.</div>
                ) : null}

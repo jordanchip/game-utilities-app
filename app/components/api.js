@@ -3,6 +3,27 @@ var $ = require("jquery");
 // API object
 var api = {
   // get the list of items, call the callback when complete
+
+  post: function(title, text, cb) {
+    var url = "/api/ideas";
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      type: 'GET',
+      headers: {'Authorization': localStorage.token},
+      success: function(res) {
+        if (cb)
+          cb(true, res);
+      },
+      error: function(xhr, status, err) {
+        // if there is an error, remove the login token
+        delete localStorage.token;
+        if (cb)
+          cb(false, status);
+      }
+    });
+  },
+
   getItems: function(cb) {
     var url = "/api/items";
     $.ajax({

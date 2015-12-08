@@ -118,6 +118,7 @@ var Ideas = React.createClass({
     element.setAttribute("class", "list-group-item");
     element.setAttribute("index", index);
     element.addEventListener("click", function() {
+      console.log(index);
       displayText(element.getAttribute("index"));
     });
     document.getElementById("idealist").appendChild(element);

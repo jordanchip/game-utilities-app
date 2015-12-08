@@ -17,10 +17,29 @@ var textStyle = {
   fontFamily: 'Comic Sans MS'
 };
 
+var backButtonStyle = {
+  visibility: 'hidden'
+}
+
+function displayText(index) {
+
+  console.log(index);
+
+  document.getElementById("postButton").style.visibility="hidden";  
+  document.getElementById("idealist").style.visibility="hidden";  
+  document.getElementById("backButton").style.visibility="visible";  
+
+  var element = document.createElement('p');
+  var textElement = document.createTextNode(ideaArray[index-1].text);
+  element.appendChild(textElement);
+
+  document.getElementById("textBody").appendChild(element);
+}
+
 var ideaArray = [
-{"title":"idea one", "text":"this is a cool idea", "index":"1"}, 
-{"title":"idea two", "text":"this is a cool idea", "index":"2"},  
-{"title":"idea three", "text":"this is a cool idea", "index":"3"} 
+{"title":"idea one", "text":"this is the first cool idea", "index":"1"}, 
+{"title":"idea two", "text":"this is a second idea", "index":"2"},  
+{"title":"idea three", "text":"this is the third idea", "index":"3"} 
 ];
 
 var Ideas = React.createClass({
@@ -57,7 +76,11 @@ var Ideas = React.createClass({
     var textElement = document.createTextNode(title);
     element.appendChild(textElement);
     element.setAttribute("class", "list-group-item");
-    element.setAttribute("id", ideaArray.length);
+    var index = ideaArray.length;
+    element.setAttribute("index", index);
+    element.addEventListener("click", function() {
+      displayText(element.getAttribute("index"));
+    });
     document.getElementById("idealist").appendChild(element);
 
     this.close;
@@ -77,7 +100,11 @@ var Ideas = React.createClass({
     var textElement = document.createTextNode(ideaArray[i].title);
     element.appendChild(textElement);
     element.setAttribute("class", "list-group-item");
-    element.setAttribute("id", i+1);
+    var index = i+1;
+    element.setAttribute("index", index);
+    element.addEventListener("click", function() {
+      displayText(element.getAttribute("index"));
+    });
     document.getElementById("idealist").appendChild(element);
     }
   },
@@ -93,7 +120,11 @@ var Ideas = React.createClass({
     var textElement = document.createTextNode(ideaArray[i].title);
     element.appendChild(textElement);
     element.setAttribute("class", "list-group-item");
-    element.setAttribute("id", i+1);
+    var index = i+1;
+    element.setAttribute("index",index);
+    element.addEventListener("click", function() {
+      displayText(element.getAttribute("index"));
+    });
     document.getElementById("idealist").appendChild(element);
     }
 
@@ -112,13 +143,23 @@ var Ideas = React.createClass({
     }
   },
 
+  goBack: function() {
 
-  render() {
+  var textBody = document.getElementById("textBody");
+  textBody.removeChild(textBody.childNodes[0]);
+
+  document.getElementById("postButton").style.visibility="visible";  
+  document.getElementById("idealist").style.visibility="visible";  
+  document.getElementById("backButton").style.visibility="hidden";  
+  },
+
+  render: function() {
 
     return (
       <div>
 
         <Button
+          id="postButton"
           bsStyle="primary"
           bsSize="large"
           onClick={this.open}
@@ -126,10 +167,26 @@ var Ideas = React.createClass({
           Post an idea!
         </Button>
 
+        <Button
+        id="backButton"
+        bsStyle="primary"
+        bsSize="large"
+        style={backButtonStyle}
+        onClick={this.goBack}
+        >
+        Back
+        </Button>
+
+      <div id="textBody">
+
+      </div>
+
       <div className="list-group" id="idealist">
       <p></p>
       
       </div>
+
+      
 
         <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
@@ -156,8 +213,6 @@ var Ideas = React.createClass({
             <Button onClick={this.close}>Close</Button>
           </Modal.Footer>
         </Modal>
-
-        
 
       </div>
     );

@@ -117,8 +117,5 @@ var api = {
 
 };
 
-<<<<<<< HEAD
 module.exports = api;
-=======
-module.exports = api;
->>>>>>> c556dd22d2d1cac172cdc2e6ce75579f49ff59d3
+

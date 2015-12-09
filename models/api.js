@@ -3,6 +3,7 @@ var User = require('./user.js');
 //var Item = require('./item.js');
 var Idea = require('./idea.js');
 var Tournament = require('./tournament.js');
+var mongoose = require('mongoose');
 
 // setup body parser
 var bodyParser = require('body-parser');
@@ -26,7 +27,6 @@ app.post('/api/users/register', function (req, res) {
             user.set_password(req.body.password);
             user.save(function(err) {
 		if (err) {
-            console.log('Houston, problem');
 		    res.sendStatus("403");
 		    return;
 		}
@@ -163,8 +163,6 @@ app.delete('/api/items/:item_id', function (req,res) {
 
 // add an item
 app.post('/api/ideas', function (req,res) {
-    console.log("here");
-            
     Idea.create({title:req.body.idea.title,text:req.body.idea.text,index:req.body.index}, function(err,item) {
     if (err) {
         res.sendStatus(403);
@@ -175,15 +173,30 @@ app.post('/api/ideas', function (req,res) {
 });
 
 app.post('/api/tournaments/', function (req,res) {
-    console.log("Here!");
-    var body = req.body;
-    console.log("BODY: " );
-    console.log(body);
     user = User.verifyToken(req.headers.authorization, function(user) {
         if (user) {
-            console.log("User ok");
+            console.log(req.body);
             // if the token is valid, create the item for the user
-        Tournament.create({title:"test",data:req.body.data,user:user.id}, function(err,item) {
+        Tournament.create({title:"test",data:req.body,user:user.id}, function(err,item) {
+        if (err) {
+            res.sendStatus(403);
+            return;
+        }
+        res.json({item:item});
+        });
+        } else {
+            res.sendStatus(403);
+        }
+    });
+});
+
+app.get('/api/tournaments/', function (req, res) {
+    console.log("got get request");
+    user = User.verifyToken(req.headers.authorization, function(user) {
+        if (user) {
+        console.log("here");
+            // if the token is valid, create the item for the user
+        Tournament.find({user: mongoose.Types.ObjectId(user.id)}, function(err,item) {
         if (err) {
             res.sendStatus(403);
             return;

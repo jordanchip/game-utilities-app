@@ -163,7 +163,6 @@ app.delete('/api/items/:item_id', function (req,res) {
 
 // add an item
 app.post('/api/ideas', function (req,res) {
-    console.log("here");
             
     Idea.create({title:req.body.idea.title,text:req.body.idea.text,index:req.body.index}, function(err,item) {
     if (err) {
@@ -174,8 +173,21 @@ app.post('/api/ideas', function (req,res) {
     
 });
 
+// get all items for the user
+app.get('/api/ideas', function (req,res) {
+        console.log("Here!");
+        //Idea.find( function(err, ideas) {
+        //if (err) {
+        //    res.sendStatus(403);
+        //    return;
+        //}
+        // return value is the list of items as JSON
+        //res.json({ideas: ideas});
+        //});
+
+});
+
 app.post('/api/tournaments/', function (req,res) {
-    console.log("Here!");
     var body = req.body;
     console.log("BODY: " );
     console.log(body);

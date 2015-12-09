@@ -75,6 +75,14 @@ var Ideas = React.createClass({
     this.setState({ showModal: true });
   },
 
+ // callback for getting the list of items, sets the list state
+  listSet: function(status, data) {
+    if (status) {
+      // set the state for the list of items
+        ideaArray = data.ideas;
+      }
+  },
+
   addIdea: function(event) {
     // prevent default browser submit
     //event.preventDefault();
@@ -127,23 +135,27 @@ var Ideas = React.createClass({
   componentDidMount: function() {
     //api.getIdeas();
 
-    var i;
-    for(i = 0; i < ideaArray.length; i++) {
+    //var i;
+    //for(i = 0; i < ideaArray.length; i++) {
 
-      this.addInitialIdea(ideaArray[i].title, ideaArray[i].text, ideaArray[i].index);
+     // this.addInitialIdea(ideaArray[i].title, ideaArray[i].text, ideaArray[i].index);
 
-    }
+    api.getIdeas(this.lisetSet);
+
+    
   },
 
     // reload the list of items
   reload: function() {
     //api.getIdeas();
 
-    var i;
-    for(i = 0; i < ideaArray.length; i++) {
+    //var i;
+    //for(i = 0; i < ideaArray.length; i++) {
 
-      this.addInitialIdea(ideaArray[i].title, ideaArray[i].text, ideaArray[i].index);
-    }
+    //  this.addInitialIdea(ideaArray[i].title, ideaArray[i].text, ideaArray[i].index);
+    //}
+
+    api.getIdeas(this.lisetSet);
 
   },
 

@@ -26,7 +26,6 @@ var api = {
     var url = "/api/ideas";
     $.ajax({
       url: url,
-      dataType: 'json',
       type: 'GET',
       success: function(res) {
         if (cb)

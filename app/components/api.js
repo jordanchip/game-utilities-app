@@ -4,65 +4,59 @@ var $ = require("jquery");
 var api = {
   // get the list of items, call the callback when complete
 
-  post: function(title, text, cb) {
+  post: function(title, text, index) {
     var url = "/api/ideas";
     $.ajax({
       url: url,
       dataType: 'json',
       type: 'GET',
-      headers: {'Authorization': localStorage.token},
       success: function(res) {
         if (cb)
           cb(true, res);
       },
       error: function(xhr, status, err) {
-        // if there is an error, remove the login token
-        delete localStorage.token;
+
         if (cb)
           cb(false, status);
       }
     });
   },
 
-  getItems: function(cb) {
-    var url = "/api/items";
+  getIdeas: function(cb) {
+    var url = "/api/ideas";
     $.ajax({
       url: url,
       dataType: 'json',
       type: 'GET',
-      headers: {'Authorization': localStorage.token},
       success: function(res) {
         if (cb)
           cb(true, res);
       },
       error: function(xhr, status, err) {
-        // if there is an error, remove the login token
-        delete localStorage.token;
         if (cb)
           cb(false, status);
       }
     });
   },
   // add an item, call the callback when complete
-  addItem: function(title, cb) {
-    var url = "/api/items";
+  addIdea: function(title, text, index, cb) {
+    var url = "/api/ideas";
     $.ajax({
       url: url,
       contentType: 'application/json',
       data: JSON.stringify({
-        item: {
-          'title': title
+        idea: {
+          'title': title,
+          'text': text,
+          'index': index
         }
       }),
       type: 'POST',
-      headers: {'Authorization': localStorage.token},
       success: function(res) {
         if (cb)
           cb(true, res);
       },
       error: function(xhr, status, err) {
-        // if there is an error, remove the login token
-        delete localStorage.token;
         if (cb)
           cb(false, status);
       }

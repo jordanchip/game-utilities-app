@@ -163,10 +163,7 @@ app.delete('/api/items/:item_id', function (req,res) {
 
 // add an item
 app.post('/api/ideas', function (req,res) {
-<<<<<<< HEAD
-            
-=======
->>>>>>> b60bb7ea9b542d8f99b79640f3be65155c9a0f15
+
     Idea.create({title:req.body.idea.title,text:req.body.idea.text,index:req.body.index}, function(err,item) {
     if (err) {
         res.sendStatus(403);
@@ -195,8 +192,7 @@ app.post('/api/tournaments/', function (req,res) {
     var body = req.body;
     console.log("BODY: " );
     console.log(body);
-=======
->>>>>>> b60bb7ea9b542d8f99b79640f3be65155c9a0f15
+
     user = User.verifyToken(req.headers.authorization, function(user) {
         if (user) {
             console.log(req.body);

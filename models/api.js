@@ -1,6 +1,7 @@
 var app = require('./express.js');
 var User = require('./user.js');
-var Item = require('./item.js');
+//var Item = require('./item.js');
+var Idea = require('./idea.js');
 var Tournament = require('./tournament.js');
 
 // setup body parser

@@ -16,7 +16,8 @@ var db = mongoose.connect('mongodb://localhost/gameutilities', function (err) {
 // models
 var api = require('./models/api.js');
 var User = require('./models/user.js');
-var Item = require('./models/item.js');
+//var Item = require('./models/item.js');
+var Idea = require('./models/idea.js');
 var Tournament = require('./models/tournament.js');
 
 

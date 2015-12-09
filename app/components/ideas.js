@@ -103,7 +103,7 @@ var Ideas = React.createClass({
     document.getElementById("idealist").appendChild(element);
 
     this.props.close;
-    //api.post(title, text, this.props.reload);
+    api.addIdea(title, text, index, this.props.reload);
     //this.refs.ideaTitle.value = '';
     //this.refs.ideaText.value = '';
   },

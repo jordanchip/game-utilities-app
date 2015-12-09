@@ -81,25 +81,7 @@ app.get('/api/items', function (req,res) {
     });
 });
 
-// add an item
-app.post('/api/items', function (req,res) {
-    // validate the supplied token
-    // get indexes
-    user = User.verifyToken(req.headers.authorization, function(user) {
-        if (user) {
-            // if the token is valid, create the item for the user
-	    Item.create({title:req.body.item.title,completed:false,user:user.id}, function(err,item) {
-		if (err) {
-		    res.sendStatus(403);
-		    return;
-		}
-		res.json({item:item});
-	    });
-        } else {
-            res.sendStatus(403);
-        }
-    });
-});
+
 
 // get an item
 app.get('/api/items/:item_id', function (req,res) {
@@ -176,6 +158,19 @@ app.delete('/api/items/:item_id', function (req,res) {
             res.sendStatus(403);
         }
     });
+});
+
+// add an item
+app.post('/api/ideas', function (req,res) {
+    console.log("here");
+            
+    Idea.create({title:req.body.idea.title,text:req.body.idea.text,index:req.body.index}, function(err,item) {
+    if (err) {
+        res.sendStatus(403);
+        return;
+    }
+    });
+    
 });
 
 app.post('/api/tournaments/', function (req,res) {

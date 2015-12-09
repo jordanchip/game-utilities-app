@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 var findOrCreate = require('mongoose-findorcreate')
 
-// Item schema
+// Idea schema
 var ideaSchema = new Schema({
     title: String,
     text: String,
@@ -12,14 +12,14 @@ var ideaSchema = new Schema({
 });
 
 // ensure schemas use virtual IDs
-itemSchema.set('toJSON', {
+ideaSchema.set('toJSON', {
     virtuals: true
 });
 
 // add findorCreate
-itemSchema.plugin(findOrCreate);
+ideaSchema.plugin(findOrCreate);
 
-// create item
-var Idea = mongoose.model('ideas', itemSchema);
+// create i
+var Idea = mongoose.model('ideas', ideaSchema);
 
 module.exports = Idea;

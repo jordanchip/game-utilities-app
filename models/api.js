@@ -163,7 +163,10 @@ app.delete('/api/items/:item_id', function (req,res) {
 
 // add an item
 app.post('/api/ideas', function (req,res) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 579e15a02222aafb3dd1205fc92bd4873f4f6bdc
     Idea.create({title:req.body.idea.title,text:req.body.idea.text,index:req.body.index}, function(err,item) {
     if (err) {
         res.sendStatus(403);
@@ -175,35 +178,42 @@ app.post('/api/ideas', function (req,res) {
 
 // get all items for the user
 app.get('/api/ideas', function (req,res) {
-        console.log("Here!");
-        //Idea.find( function(err, ideas) {
-        //if (err) {
-        //    res.sendStatus(403);
-        //    return;
-        //}
+        Idea.find( function(err, ideas) {
+        if (err) {
+           res.sendStatus(403);
+           return;
+        }
         // return value is the list of items as JSON
-        //res.json({ideas: ideas});
-        //});
+        res.json({ideas: ideas});
+        });
 
 });
 
 app.post('/api/tournaments/', function (req,res) {
 <<<<<<< HEAD
+<<<<<<< HEAD
     var body = req.body;
     console.log("BODY: " );
     console.log(body);
 
+=======
+>>>>>>> 579e15a02222aafb3dd1205fc92bd4873f4f6bdc
     user = User.verifyToken(req.headers.authorization, function(user) {
         if (user) {
             console.log(req.body);
             // if the token is valid, create the item for the user
-        Tournament.create({title:"test",data:req.body,user:user.id}, function(err,item) {
-        if (err) {
-            res.sendStatus(403);
-            return;
-        }
-        res.json({item:item});
-        });
+
+            Tournament.update(
+                {user: mongoose.Types.ObjectId(user.id)},
+                {data: req.body},
+                { upsert: true },
+                function(err,item) {
+                    if (err) {
+                        res.sendStatus(403);
+                        return;
+                    }
+                res.json({item:item});
+            });
         } else {
             res.sendStatus(403);
         }
@@ -211,10 +221,8 @@ app.post('/api/tournaments/', function (req,res) {
 });
 
 app.get('/api/tournaments/', function (req, res) {
-    console.log("got get request");
     user = User.verifyToken(req.headers.authorization, function(user) {
         if (user) {
-        console.log("here");
             // if the token is valid, create the item for the user
         Tournament.find({user: mongoose.Types.ObjectId(user.id)}, function(err,item) {
         if (err) {

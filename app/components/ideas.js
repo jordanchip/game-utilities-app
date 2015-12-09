@@ -24,6 +24,7 @@ var backButtonStyle = {
 function displayText(index) {
 
   console.log(index);
+  console.log(ideaArray);
 
   document.getElementById("postButton").style.visibility="hidden";  
   document.getElementById("idealist").style.visibility="hidden";  
@@ -55,11 +56,7 @@ function displayText(index) {
   document.getElementById("textBody").appendChild(element);
 }
 
-var ideaArray = [
-{"title":"Hearts", "text":"Uses a 52 card pack.  The player with the highest score loses. At the end of each hand, players count the number of hearts they have taken as well as the queen of spades ", "index":"1"}, 
-{"title":"Checkers", "text":"This involves a game board where you have lots of checked spots hence the name checkers lol and you take the pieces and you jump over pieces and you take their pieces and you laugh at the other persons face", "index":"2"},  
-{"title":"Chess", "text":"This is a smart person's game and if you play it then you are smart and you will go to college and get lots of money.  You take somebody elses pieces and you throw them out the window yes out the window and then you win the game by taking pieces and moving them smartly", "index":"3"} 
-];
+var ideaArray = [];
 
 var Ideas = React.createClass({
   getInitialState() {
@@ -79,8 +76,16 @@ var Ideas = React.createClass({
   listSet: function(status, data) {
     if (status) {
       // set the state for the list of items
+        console.log("here");
         ideaArray = data.ideas;
+        console.log(ideaArray);
+
+        var i;
+      for(i = 0; i < ideaArray.length; i++) {
+
+      this.addInitialIdea(ideaArray[i].title, ideaArray[i].text, i+1);
       }
+    }
   },
 
   addIdea: function(event) {
@@ -104,6 +109,7 @@ var Ideas = React.createClass({
     element.appendChild(textElement);
     element.setAttribute("class", "list-group-item");
     var index = ideaArray.length;
+    console.log(index);
     element.setAttribute("index", index);
     element.addEventListener("click", function() {
       displayText(element.getAttribute("index"));
@@ -140,7 +146,7 @@ var Ideas = React.createClass({
 
      // this.addInitialIdea(ideaArray[i].title, ideaArray[i].text, ideaArray[i].index);
 
-    api.getIdeas(this.lisetSet);
+    api.getIdeas(this.listSet);
 
     
   },
@@ -155,7 +161,7 @@ var Ideas = React.createClass({
     //  this.addInitialIdea(ideaArray[i].title, ideaArray[i].text, ideaArray[i].index);
     //}
 
-    api.getIdeas(this.lisetSet);
+    api.getIdeas(this.listSet);
 
   },
 

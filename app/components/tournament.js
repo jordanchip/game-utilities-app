@@ -43,6 +43,9 @@ var Tournament = React.createClass({
   },
 
   saveFn: function() {
+    if (!localStorage.token) {
+      return;
+    }
     var container = $('.bracket');
     var data = container.bracket('data');
     api.addTournament("titleTest", data, function(loggedIn) {
@@ -54,50 +57,36 @@ var Tournament = React.createClass({
         });
       }
     }.bind(this));
-    //console.log(json);
   },
 
 
-  displayBracket: function() {
+  displayBracket: function(data) {
     console.log("Displaying Bracket");
+    document.getElementById("buttonDiv").style.visibility = 'visible';
     this.setState({ showButton: true });
-    // document.getElementById("buttonDiv").style.visibility="visible";  
-    // document.getElementById("bracketID").style.visibility="visible";  
-
-
-    // $('.list-group').bracket({
-    //     init: minimalData /* data to initialize the bracket with */ });
-    // var container = $('list-group')
-    // container.bracket({
-    //   init: minimalData,
-    //   save: saveFn,
-    //   userData: "http://myapi"})
- 
-    // /* You can also inquiry the current data */
-    // $('#dataOutput').text(jQuery.toJSON(data))
 
     var container = $('.bracket');
     container.bracket({
-      init: emptyData,
-      save: this.saveFn
+      init: data,
+      save: function(){}
     })
 
-
-    // $('.bracket').effect("size", {
-    //     to: { width: 00, height: 500 }
-    // }, 10000 );
-
-    // $('.bracket').animate({
-    //   height: '100px',
-    //   width: '100px'
-    // });
-
-    document.getElementById("buttonDiv").style.visibility = 'visible';
+  },
+  getBracketForUser: function() {
+    api.getTournamentForUser(function(res) {
+      console.log(res);
+      // this.setState({
+      //   tournament: res.data
+      // });
+      this.displayBracket(res.data).bind(this);
+    });
   },
 
   componentDidMount: function() {
+    if (localStorage.token) {
+      this.getBracketForUser();
+    }
     this.displayBracket();
-    document.getElementById("buttonDiv").style.visibility = 'hidden';
   },
 
   back: function() {
@@ -114,9 +103,9 @@ var Tournament = React.createClass({
           <Button
             bsStyle="primary"
             bsSize="large"
-            onClick={this.back}
+            onClick={this.saveFn}
           >
-            Back
+            Save
           </Button>
         </div>
       </div>

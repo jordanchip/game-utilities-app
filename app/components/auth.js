@@ -25,6 +25,7 @@ var auth = {
       error: function(xhr, status, err) {
         // if there is an error, remove any login token
         delete localStorage.token;
+        delete localStorage.name;
         this.onChange(false);
         if (cb)
           cb(false);
@@ -66,6 +67,7 @@ var auth = {
         // if there is an error, remove any login token
         window.alert("failure");
         delete localStorage.token;
+        delete localStorage.name;
         this.onChange(false);
         if (cb)
           cb(false);

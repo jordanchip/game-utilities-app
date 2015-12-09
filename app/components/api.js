@@ -112,8 +112,28 @@ var api = {
     var url = "/api/tournaments";
     $.ajax({
       url: url,
+      contentType: 'application/json',
       data: JSON.stringify(data),
       type: 'POST',
+      headers: {'Authorization': localStorage.token},
+      success: function(res) {
+        if (cb)
+          cb(true, res);
+      },
+      error: function(xhr, status, err) {
+        // if there is an error, remove the login token
+        delete localStorage.token;
+        if (cb)
+          cb(false, status);
+      }
+    })
+  },
+
+  getTournamentForUser: function(cb) {
+    var url = "/api/tournaments";
+    $.ajax({
+      url: url,
+      type: 'GET',
       headers: {'Authorization': localStorage.token},
       success: function(res) {
         if (cb)

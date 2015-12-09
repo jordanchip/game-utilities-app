@@ -119,7 +119,6 @@ var api = {
     var url = "/api/tournaments";
     $.ajax({
       url: url,
-      type: 'application/json',
       data: JSON.stringify(data),
       type: 'POST',
       headers: {'Authorization': localStorage.token},

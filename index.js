@@ -7,7 +7,7 @@ app.use(express.static('public'));
 
 // setup mongoose
 var mongoose = require('mongoose');
-var db = mongoose.connect('mongodb://localhost/', function (err) {
+var db = mongoose.connect('mongodb://localhost/gameutilities', function (err) {
 	if (err) {
 		console.log(err);
 	}

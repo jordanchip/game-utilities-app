@@ -56,6 +56,8 @@ var Tournament = React.createClass({
     }.bind(this));
     //console.log(json);
   },
+
+
   displayBracket: function() {
     console.log("Displaying Bracket");
     this.setState({ showButton: true });

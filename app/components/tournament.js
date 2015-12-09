@@ -39,16 +39,17 @@ var Tournament = React.createClass({
   // },
 
   getInitialState() {
-    return { showButton: false };
+    return { reload: false };
   },
 
   saveFn: function() {
     if (!localStorage.token) {
+      alert("You must be signed in to save.");
       return;
     }
     var container = $('.bracket');
     var data = container.bracket('data');
-    api.addTournament("titleTest", data, function(loggedIn) {
+    api.addTournament("UserBracket", data, function(loggedIn) {
       // login callback
       if (!loggedIn) {
         window.alert("failure");
@@ -59,12 +60,20 @@ var Tournament = React.createClass({
     }.bind(this));
   },
 
+  resetBracket: function() {
+    this.setState({reload: true});
+  },
+
+  componentDidUpdate: function() {
+    if (this.state.reload) {
+      this.displayBracket(emptyData);
+      if (localStorage.token) {
+        api.addTournament("UserBracket", emptyData);
+      }
+    }
+  },
 
   displayBracket: function(data) {
-    console.log("Displaying Bracket");
-    document.getElementById("buttonDiv").style.visibility = 'visible';
-    this.setState({ showButton: true });
-
     var container = $('.bracket');
     container.bracket({
       init: data,
@@ -73,12 +82,22 @@ var Tournament = React.createClass({
 
   },
   getBracketForUser: function() {
-    api.getTournamentForUser(function(res) {
-      console.log(res);
-      // this.setState({
-      //   tournament: res.data
-      // });
-      this.displayBracket(res.data).bind(this);
+    api.getTournamentForUser(function(success,res) {
+      if (success) {
+        var item = res.item;
+        var data;
+        if (item.length == 1) {
+          data = item[0].data;
+        }
+        else {
+          data = emptyData;
+        }
+        var container = $('.bracket');
+        container.bracket({
+          init: data,
+          save: function(){}
+        });
+        }
     });
   },
 
@@ -86,7 +105,9 @@ var Tournament = React.createClass({
     if (localStorage.token) {
       this.getBracketForUser();
     }
-    this.displayBracket();
+    else {
+      this.displayBracket(emptyData);
+    }
   },
 
   back: function() {
@@ -100,7 +121,8 @@ var Tournament = React.createClass({
         <div className="bracket" id="bracketID" style={bracketStyle}></div>
         <div id="buttonDiv">
 
-          <Button
+          <Button 
+            id="saveButton"
             bsStyle="primary"
             bsSize="large"
             onClick={this.saveFn}

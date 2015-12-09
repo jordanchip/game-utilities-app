@@ -190,13 +190,18 @@ app.post('/api/tournaments/', function (req,res) {
         if (user) {
             console.log(req.body);
             // if the token is valid, create the item for the user
-        Tournament.create({title:"test",data:req.body,user:user.id}, function(err,item) {
-        if (err) {
-            res.sendStatus(403);
-            return;
-        }
-        res.json({item:item});
-        });
+
+            Tournament.update(
+                {user: mongoose.Types.ObjectId(user.id)},
+                {data: req.body},
+                { upsert: true },
+                function(err,item) {
+                    if (err) {
+                        res.sendStatus(403);
+                        return;
+                    }
+                res.json({item:item});
+            });
         } else {
             res.sendStatus(403);
         }
@@ -204,10 +209,8 @@ app.post('/api/tournaments/', function (req,res) {
 });
 
 app.get('/api/tournaments/', function (req, res) {
-    console.log("got get request");
     user = User.verifyToken(req.headers.authorization, function(user) {
         if (user) {
-        console.log("here");
             // if the token is valid, create the item for the user
         Tournament.find({user: mongoose.Types.ObjectId(user.id)}, function(err,item) {
         if (err) {

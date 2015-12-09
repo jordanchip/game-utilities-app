@@ -116,16 +116,11 @@ var api = {
   },
 
   addTournament: function(title1, data, cb) {
-    var url = "/api/tournaments/" + data.id;
+    var url = "/api/tournaments";
     $.ajax({
       url: url,
       type: 'application/json',
-      data: JSON.stringify({
-        item: {
-          title: title1,
-          data: data
-        }
-      }),
+      data: JSON.stringify(data),
       type: 'POST',
       headers: {'Authorization': localStorage.token},
       success: function(res) {
@@ -142,6 +137,12 @@ var api = {
   }
 
 };
+// data: JSON.stringify({
+//         item: {
+//           title: title1,
+//           data: data
+//         }
+//       }),
 
 module.exports = api;
 

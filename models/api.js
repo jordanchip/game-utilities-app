@@ -180,10 +180,14 @@ app.delete('/api/items/:item_id', function (req,res) {
 
 app.post('/api/tournaments/', function (req,res) {
     console.log("Here!");
+    var body = req.body;
+    console.log("BODY: " );
+    console.log(body);
     user = User.verifyToken(req.headers.authorization, function(user) {
         if (user) {
+            console.log("User ok");
             // if the token is valid, create the item for the user
-        Tournament.create({title:req.body.item.title,data:req.body.item.data,user:user.id}, function(err,item) {
+        Tournament.create({title:"test",data:req.body.data,user:user.id}, function(err,item) {
         if (err) {
             res.sendStatus(403);
             return;

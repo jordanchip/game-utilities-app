@@ -38,7 +38,7 @@ var auth = {
     // check if token in local storage
     if (localStorage.token) {
       this.onChange(true);
-      if (cb)
+      if (cb) 
         cb(true);
       return;
     }

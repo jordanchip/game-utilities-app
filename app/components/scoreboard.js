@@ -29,6 +29,69 @@ var Scoreboard = React.createClass({
     this.setState({ showModal: true });
   },
 
+
+  addPlayer: function() {
+
+    var name = this.refs.playerName.value;
+
+    if(!name)
+      return;
+
+    var scoreTable = document.getElementById("board");
+    var tr = document.createElement("tr");
+    var td = document.createElement("td");
+    var textElement = document.createTextNode(name);
+    td.appendChild(textElement);
+    tr.appendChild(td);
+
+    td = document.createElement("td");
+    textElement = document.createTextNode("0");
+    td.appendChild(textElement);
+    tr.appendChild(td);
+
+
+
+    td = document.createElement("td");
+    var inputBox = document.createElement('input');
+    inputBox.setAttribute('type', 'text');
+    inputBox.setAttribute('size', '4');
+    td.appendChild(inputBox);
+    tr.appendChild(td);
+
+    td = document.createElement("td");
+    var button = document.createElement('button');
+    button.setAttribute('type', 'button');
+    button.setAttribute('class', 'btn btn-info btn-sm');
+
+
+    value = 1;
+    button.addEventListener('click', function() {
+
+      var inputBoxName = "input" + value;
+      var pointsField = "points" + value;
+
+      console.log(inputBoxName);
+
+      var newPoints = this.refs.ideaTitle.value;;
+
+      console.log(newPoints);
+
+    });
+
+    textElement = document.createTextNode("update");
+    button.appendChild(textElement);
+    td.appendChild(button);
+    tr.appendChild(td);
+
+
+
+    scoreTable.appendChild(tr);
+
+    this.close();
+
+  },
+
+
   render: function() {
     return (
       <div className="table-responsive">
@@ -42,7 +105,7 @@ var Scoreboard = React.createClass({
           Add a Player
         </Button>
 
-            <table className="table table-striped">
+            <table id="scoreTable" className="table table-striped">
               <thead>
                 <tr>
                   <th>Player</th>
@@ -51,11 +114,11 @@ var Scoreboard = React.createClass({
                   <th>Update</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="board">
                 <tr>
                   <td>Jon</td>
-                  <td>0</td>
-                  <td><input type="text" size="4"/></td>
+                  <td id="points1">0</td>
+                  <td><input id="input1" type="text" size="4"/></td>
                   <td><button type="button" className="btn btn-info btn-sm">update</button></td>
                 </tr>
                 <tr>
@@ -88,11 +151,11 @@ var Scoreboard = React.createClass({
            <form role="form">
           <div>
             <div className="form-login">
-                <input type="text" ref="ideaTitle" className="form-control input-sm chat-input" placeholder="Title" />
+                <input type="text" ref="playerName" className="form-control input-sm chat-input" placeholder="Title" />
               <br/>
               <div className="wrapper">
                 <span className="group-btn">     
-                 <a onClick={this.onClick} className="btn btn-primary btn-md">Add <i className="fa fa-sign-in"></i></a>
+                 <a onClick={this.addPlayer} className="btn btn-primary btn-md">Add <i className="fa fa-sign-in"></i></a>
                 </span>
               </div>
             </div>

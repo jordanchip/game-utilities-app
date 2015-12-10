@@ -51,7 +51,7 @@ var Register = React.createClass({
               <br/>
               <input type="text" ref="username" className="form-control input-sm chat-input" placeholder="Username" />
               <br/>
-              <input type="text" ref="password" className="form-control input-sm chat-input" placeholder="Password" />
+              <input type="password" ref="password" className="form-control input-sm chat-input" placeholder="Password" />
               <br/>     
                 <input className="btn btn-primary btn-md" type="submit" onClick={this.register} value="register"/>
                

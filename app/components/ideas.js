@@ -244,7 +244,7 @@ var Ideas = React.createClass({
 
         <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
-            <Modal.Title>Just post it</Modal.Title>
+            <Modal.Title>Post your game idea here</Modal.Title>
           </Modal.Header>
           <Modal.Body>
            <form role="form">

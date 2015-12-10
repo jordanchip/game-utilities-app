@@ -16,6 +16,11 @@ var logoStyle = {
 
 };
 
+var logoutScreenStyle = {
+
+  visibility: 'hidden'
+};
+
 var titleStyle = {
 
   color: 'white',
@@ -33,9 +38,41 @@ var Logo = React.createClass({
 });
 
 var App = React.createClass({
+   
+  getInitialState: function() {
+    //document.getElementById("logoutScreen").style.visibility = 'hidden';
+    return {showLogout: false};
+  },
+
+  componentDidMount: function() {
+    if (localStorage.token &&
+        localStorage.name) {
+      this.showLogout(true);
+    }
+    //document.getElementById("logoutScreen").style.visibility = 'hidden';
+  },
+
+
+  showLogout: function() {
+    this.setState({showLogout:true});
+  },
+
+  logout: function() {
+    if (localStorage.token) {
+      delete localStorage.token;
+      if (localStorage.name) {
+        delete localStorage.name;
+      }
+      //this.setState({loggedIn:false});
+   }
+    else {
+      alert('You are not logged in');
+    }
+    //this.showLogout(false);
+  },
 
   render: function() {
-    return (
+   return (
       <div>
       <Logo />
         <nav className="navbar navbar-default" role="navigation">
@@ -62,10 +99,12 @@ var App = React.createClass({
                 <ul className="nav navbar-nav">
                   <li><Link to="/register">Register</Link></li>
                 </ul>
+                <ul className="nav navbar-nav">
+                  <li onClick={this.logout}><Link to="/logout">Logout</Link></li>
+                </ul>
               </div>
             </div>
         </nav>
-
         <div className="container">
           {this.props.children}
         </div>

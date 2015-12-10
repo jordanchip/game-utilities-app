@@ -14,6 +14,25 @@ var textStyle = {
   fontFamily: 'Comic Sans MS'
 };
 
+
+var scoreArray = [{"player":"Jon", "points":"0"},
+                  {"player":"Grant", "points":"0"},
+                  {"player":"Jordan", "points":"0"},
+                  {"player":"Guy", "points":"0"},
+                  ];
+
+
+function updatePoints(newPoints, value) {
+
+  console.log(value);
+
+  var pointIndex="point"+value;
+
+  pointElement = document.getElementById(pointIndex);
+
+  pointElement.innerHTML=newPoints;
+}
+
 var Scoreboard = React.createClass({
 
   getInitialState() {
@@ -29,10 +48,28 @@ var Scoreboard = React.createClass({
     this.setState({ showModal: true });
   },
 
+  setList: function() {
 
-  addPlayer: function() {
+    console.log(scoreArray);
 
-    var name = this.refs.playerName.value;
+    var i;
+    for(i=0; i < scoreArray.length; i++) {
+
+      this.addInitialElement(scoreArray[i].player, scoreArray[i].points, i);
+    }
+
+  },
+
+  wipeScreen: function() {
+
+    var board = document.getElementById("board");
+    while(board.firstChild) {
+      board.removeChild(board.firstChild);
+    }
+
+  },
+
+  addInitialElement: function(name, points, value) {
 
     if(!name)
       return;
@@ -44,12 +81,11 @@ var Scoreboard = React.createClass({
     td.appendChild(textElement);
     tr.appendChild(td);
 
-    td = document.createElement("td");
-    textElement = document.createTextNode("0");
-    td.appendChild(textElement);
-    tr.appendChild(td);
-
-
+    pointElement = document.createElement("td");
+    textElement = document.createTextNode(points);
+    pointElement.setAttribute("id", "point"+value);
+    pointElement.appendChild(textElement);
+    tr.appendChild(pointElement);
 
     td = document.createElement("td");
     var inputBox = document.createElement('input');
@@ -63,31 +99,71 @@ var Scoreboard = React.createClass({
     button.setAttribute('type', 'button');
     button.setAttribute('class', 'btn btn-info btn-sm');
 
-
-    value = 1;
     button.addEventListener('click', function() {
 
-      var inputBoxName = "input" + value;
-      var pointsField = "points" + value;
 
-      console.log(inputBoxName);
-
-      var newPoints = this.refs.ideaTitle.value;;
+      var newPoints = inputBox.value;
 
       console.log(newPoints);
 
-    });
+      updatePoints(newPoints, value);
+
+   });
+
 
     textElement = document.createTextNode("update");
     button.appendChild(textElement);
     td.appendChild(button);
     tr.appendChild(td);
 
-
-
     scoreTable.appendChild(tr);
 
-    this.close();
+  },
+
+  setList: function() {
+
+    console.log(scoreArray);
+
+    var i;
+    for(i=0; i < scoreArray.length; i++) {
+
+      this.addInitialElement(scoreArray[i].player, scoreArray[i].points, i);
+    }
+
+  },
+
+  componentDidMount: function() {
+
+    console.log('mounted');
+
+    this.setList();
+
+  },
+
+    // reload the list of items
+  reload: function() {
+
+    console.log('reloaded');
+
+    this.setList();
+
+  },
+
+  addPlayer: function() {
+
+    var name = this.refs.playerName.value;
+
+    if(!name)
+      return;
+
+    var scoreElement = {"player":name, "points":"0"};
+
+    scoreArray.push(scoreElement);
+
+    this.wipeScreen();
+
+    this.setList();
+
 
   },
 
@@ -115,30 +191,7 @@ var Scoreboard = React.createClass({
                 </tr>
               </thead>
               <tbody id="board">
-                <tr>
-                  <td>Jon</td>
-                  <td id="points1">0</td>
-                  <td><input id="input1" type="text" size="4"/></td>
-                  <td><button type="button" className="btn btn-info btn-sm">update</button></td>
-                </tr>
-                <tr>
-                  <td>Grant</td>
-                  <td>1</td>
-                  <td><input type="text" size="4"/></td>
-                  <td><button type="button" className="btn btn-info btn-sm">update</button></td>
-                </tr>
-                <tr>
-                  <td>Jordan</td>
-                  <td>2</td>
-                  <td><input type="text" size="4"/></td>
-                 <td> <button type="button" className="btn btn-info btn-sm">update</button></td>
-                </tr>
-                <tr>
-                  <td>Guy</td>
-                  <td>3</td>
-                  <td><input type="text" size="4"/></td>
-                  <td><button type="button" className="btn btn-info btn-sm">update</button></td>
-                </tr>
+
 
               </tbody>
             </table>

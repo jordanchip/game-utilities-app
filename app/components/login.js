@@ -32,11 +32,11 @@ var Login = React.createClass({
 
       // login callback
       if (!loggedIn) {
-        window.alert("failure");
         return this.setState({
           error: true
         });
       }
+
     }.bind(this));
   },
 
@@ -58,6 +58,8 @@ var Login = React.createClass({
             </div>
           </div>
         </form>
+        <p id="info"> </p>
+
       </div>
     );
   }

@@ -56,7 +56,7 @@ var auth = {
       },
       success: function(res) {
         // on success, store a login token
-        window.alert("success!");
+        
         localStorage.token = res.token;
         localStorage.name = res.name;
         this.onChange(true);

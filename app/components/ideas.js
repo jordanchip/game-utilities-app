@@ -202,7 +202,7 @@ var Ideas = React.createClass({
 
     return (
       <div>
-
+      <div className="btn-toolbar">
         <Button
           id="postButton"
           bsStyle="primary"
@@ -224,14 +224,14 @@ var Ideas = React.createClass({
 
         <Button
         id="deleteButton"
-        bsStyle="primary"
+        bsStyle="danger"
         bsSize="large"
         style={backButtonStyle}
         onClick={this.removeIdea}
         >
         Delete
         </Button>
-
+    </div>
       <div id="textBody">
 
       </div>

@@ -15,22 +15,51 @@ var textStyle = {
 };
 
 
+
 var scoreArray = [{"player":"Jon", "points":"0"},
                   {"player":"Grant", "points":"0"},
                   {"player":"Jordan", "points":"0"},
                   {"player":"Guy", "points":"0"},
                   ];
-
+                  
+var removeIndex = 0;
 
 function updatePoints(newPoints, value) {
 
-  console.log(value);
+  scoreArray[value].points=newPoints;
 
   var pointIndex="point"+value;
 
   pointElement = document.getElementById(pointIndex);
 
   pointElement.innerHTML=newPoints;
+}
+
+function removeElement(value) {
+
+  console.log(value);
+
+  scoreArray.splice(value, 1);
+  /*var board = document.getElementById("board");
+    
+  console.log(value);
+
+  board.removeChild(board.childNodes[value]);
+
+  var childNodes = board.childNodes;
+
+  var i;
+  for(i=0; i < childNodes.length; i++) {
+    var pointIndex="point"+i;
+    var childNode = childNodes[i];
+    var elementToSet = childNode.getElementsByTagName('td')[1];
+    elementToSet.setAttribute("id", pointIndex);
+    var updateButton = childNode.getElementsByTagName('td')[3];
+    var removeButton = childNode.getElementsByTagName('td')[4];
+    
+
+  } */
+
 }
 
 var Scoreboard = React.createClass({
@@ -50,7 +79,6 @@ var Scoreboard = React.createClass({
 
   setList: function() {
 
-    console.log(scoreArray);
 
     var i;
     for(i=0; i < scoreArray.length; i++) {
@@ -67,6 +95,23 @@ var Scoreboard = React.createClass({
       board.removeChild(board.firstChild);
     }
 
+  },
+
+    reset: function() {
+
+    scoreArray = [];
+
+    this.wipeScreen();
+
+    },
+
+  erase: function() {
+
+    removeElement(removeIndex);
+
+    this.wipeScreen();
+
+    this.setList();
   },
 
   addInitialElement: function(name, points, value) {
@@ -94,6 +139,7 @@ var Scoreboard = React.createClass({
     td.appendChild(inputBox);
     tr.appendChild(td);
 
+//----------------------update button-------------------------
     td = document.createElement("td");
     var button = document.createElement('button');
     button.setAttribute('type', 'button');
@@ -104,25 +150,33 @@ var Scoreboard = React.createClass({
 
       var newPoints = inputBox.value;
 
-      console.log(newPoints);
-
       updatePoints(newPoints, value);
 
    });
-
 
     textElement = document.createTextNode("update");
     button.appendChild(textElement);
     td.appendChild(button);
     tr.appendChild(td);
 
+//----------------------remove button-------------------------
+/*    td = document.createElement("td");
+    var button = document.createElement('button');
+    button.setAttribute('type', 'button');
+    button.setAttribute('class', 'btn btn-danger btn-sm');
+
+    button.addEventListener('click', this.erase);
+
+    textElement = document.createTextNode("remove");
+    button.appendChild(textElement);
+    td.appendChild(button);
+    tr.appendChild(td); */
+//---------------------append it all-------------------------
     scoreTable.appendChild(tr);
 
   },
 
   setList: function() {
-
-    console.log(scoreArray);
 
     var i;
     for(i=0; i < scoreArray.length; i++) {
@@ -134,7 +188,6 @@ var Scoreboard = React.createClass({
 
   componentDidMount: function() {
 
-    console.log('mounted');
 
     this.setList();
 
@@ -142,8 +195,6 @@ var Scoreboard = React.createClass({
 
     // reload the list of items
   reload: function() {
-
-    console.log('reloaded');
 
     this.setList();
 
@@ -164,7 +215,7 @@ var Scoreboard = React.createClass({
 
     this.setList();
 
-
+    this.close();
   },
 
 
@@ -172,6 +223,7 @@ var Scoreboard = React.createClass({
     return (
       <div className="table-responsive">
 
+      <div className="btn-toolbar">
         <Button
           id="addButton"
           bsStyle="primary"
@@ -181,6 +233,15 @@ var Scoreboard = React.createClass({
           Add a Player
         </Button>
 
+        <Button 
+          id="resetButton"
+          bsStyle="danger"
+          bsSize="large"
+          onClick={this.reset}
+        >
+          Reset
+        </Button>
+        </div>
             <table id="scoreTable" className="table table-striped">
               <thead>
                 <tr>

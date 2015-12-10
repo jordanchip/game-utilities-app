@@ -19,12 +19,15 @@ var textStyle = {
 var scoreArray = [{"player":"Jon", "points":"0"},
                   {"player":"Grant", "points":"0"},
                   {"player":"Jordan", "points":"0"},
-                  {"player":"Guy", "points":"0"},
+                  {"player":"Joe", "points":"0"},
                   ];
                   
 var removeIndex = 0;
 
 function updatePoints(newPoints, value) {
+
+  if(!newPoints)
+    return;
 
   scoreArray[value].points=newPoints;
 

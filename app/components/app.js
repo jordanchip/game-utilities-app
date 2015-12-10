@@ -16,6 +16,8 @@ var logoStyle = {
 
 };
 
+
+
 var logoutScreenStyle = {
 
   visibility: 'hidden'
@@ -73,7 +75,7 @@ var App = React.createClass({
 
   render: function() {
    return (
-      <div>
+      <div >
       <Logo />
         <nav className="navbar navbar-default" role="navigation">
           <div className="container">

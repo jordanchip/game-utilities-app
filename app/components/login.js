@@ -36,7 +36,6 @@ var Login = React.createClass({
           error: true
         });
       }
-
     }.bind(this));
   },
 

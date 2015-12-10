@@ -39,6 +39,7 @@ var auth = {
     // check if token in local storage
     if (localStorage.token) {
       this.onChange(true);
+      alert("You are already logged in as:"+username);
       if (cb) 
         cb(true);
       return;
@@ -55,8 +56,8 @@ var auth = {
         password: password
       },
       success: function(res) {
+        alert("Logged in as: "+res.name);
         // on success, store a login token
-        
         localStorage.token = res.token;
         localStorage.name = res.name;
         this.onChange(true);

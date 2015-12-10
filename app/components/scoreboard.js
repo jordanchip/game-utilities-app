@@ -1,5 +1,11 @@
 var React = require("react");
 
+var Popover = require('react-bootstrap/lib/Popover');
+var Tooltip = require('react-bootstrap/lib/Tooltip');
+var Button = require('react-bootstrap/lib/Button');
+var Modal = require('react-bootstrap/lib/Modal');
+var OverlayTrigger = require('react-bootstrap/lib/OverlayTrigger');
+
 var textStyle = {
 
   color: 'RoyalBlue',
@@ -9,138 +15,95 @@ var textStyle = {
 };
 
 var Scoreboard = React.createClass({
+
+  getInitialState() {
+    //ideas: [],
+    return { showModal: false };
+  },
+
+  close() {
+    this.setState({ showModal: false });
+  },
+
+  open() {
+    this.setState({ showModal: true });
+  },
+
   render: function() {
     return (
-      <div className="container">
-      <p style={textStyle}>Score dem boards!</p>
       <div className="table-responsive">
+
+        <Button
+          id="addButton"
+          bsStyle="primary"
+          bsSize="large"
+          onClick={this.open}
+        >
+          Add a Player
+        </Button>
+
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
+                  <th>Player</th>
+                  <th>Points</th>
+                  <th>Input</th>
+                  <th>Update</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>sit</td>
+                  <td>Jon</td>
+                  <td>0</td>
+                  <td><input type="text" size="4"/></td>
+                  <td><button type="button" className="btn btn-info btn-sm">update</button></td>
                 </tr>
                 <tr>
-                  <td>1,002</td>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>elit</td>
+                  <td>Grant</td>
+                  <td>1</td>
+                  <td><input type="text" size="4"/></td>
+                  <td><button type="button" className="btn btn-info btn-sm">update</button></td>
                 </tr>
                 <tr>
-                  <td>1,003</td>
-                  <td>Integer</td>
-                  <td>nec</td>
-                  <td>odio</td>
-                  <td>Praesent</td>
+                  <td>Jordan</td>
+                  <td>2</td>
+                  <td><input type="text" size="4"/></td>
+                 <td> <button type="button" className="btn btn-info btn-sm">update</button></td>
                 </tr>
                 <tr>
-                  <td>1,003</td>
-                  <td>libero</td>
-                  <td>Sed</td>
-                  <td>cursus</td>
-                  <td>ante</td>
+                  <td>Guy</td>
+                  <td>3</td>
+                  <td><input type="text" size="4"/></td>
+                  <td><button type="button" className="btn btn-info btn-sm">update</button></td>
                 </tr>
-                <tr>
-                  <td>1,004</td>
-                  <td>dapibus</td>
-                  <td>diam</td>
-                  <td>Sed</td>
-                  <td>nisi</td>
-                </tr>
-                <tr>
-                  <td>1,005</td>
-                  <td>Nulla</td>
-                  <td>quis</td>
-                  <td>sem</td>
-                  <td>at</td>
-                </tr>
-                <tr>
-                  <td>1,006</td>
-                  <td>nibh</td>
-                  <td>elementum</td>
-                  <td>imperdiet</td>
-                  <td>Duis</td>
-                </tr>
-                <tr>
-                  <td>1,007</td>
-                  <td>sagittis</td>
-                  <td>ipsum</td>
-                  <td>Praesent</td>
-                  <td>mauris</td>
-                </tr>
-                <tr>
-                  <td>1,008</td>
-                  <td>Fusce</td>
-                  <td>nec</td>
-                  <td>tellus</td>
-                  <td>sed</td>
-                </tr>
-                <tr>
-                  <td>1,009</td>
-                  <td>augue</td>
-                  <td>semper</td>
-                  <td>porta</td>
-                  <td>Mauris</td>
-                </tr>
-                <tr>
-                  <td>1,010</td>
-                  <td>massa</td>
-                  <td>Vestibulum</td>
-                  <td>lacinia</td>
-                  <td>arcu</td>
-                </tr>
-                <tr>
-                  <td>1,011</td>
-                  <td>eget</td>
-                  <td>nulla</td>
-                  <td>Class</td>
-                  <td>aptent</td>
-                </tr>
-                <tr>
-                  <td>1,012</td>
-                  <td>taciti</td>
-                  <td>sociosqu</td>
-                  <td>ad</td>
-                  <td>litora</td>
-                </tr>
-                <tr>
-                  <td>1,013</td>
-                  <td>torquent</td>
-                  <td>per</td>
-                  <td>conubia</td>
-                  <td>nostra</td>
-                </tr>
-                <tr>
-                  <td>1,014</td>
-                  <td>per</td>
-                  <td>inceptos</td>
-                  <td>himenaeos</td>
-                  <td>Curabitur</td>
-                </tr>
-                <tr>
-                  <td>1,015</td>
-                  <td>sodales</td>
-                  <td>ligula</td>
-                  <td>in</td>
-                  <td>libero</td>
-                </tr>
+
               </tbody>
             </table>
+
+            <Modal show={this.state.showModal} onHide={this.close}>
+          <Modal.Header closeButton>
+            <Modal.Title>What is his name?</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+           <form role="form">
+          <div>
+            <div className="form-login">
+                <input type="text" ref="ideaTitle" className="form-control input-sm chat-input" placeholder="Title" />
+              <br/>
+              <div className="wrapper">
+                <span className="group-btn">     
+                 <a onClick={this.onClick} className="btn btn-primary btn-md">Add <i className="fa fa-sign-in"></i></a>
+                </span>
+              </div>
+            </div>
           </div>
-      </div>
+        </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.close}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+          </div>
     );
   }
 });

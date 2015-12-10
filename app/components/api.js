@@ -62,6 +62,25 @@ var api = {
     });
 
   },
+
+        // delete an item, call the callback when complete
+  deleteIdea: function(idea, cb) {
+    var url = "/api/ideas/" + idea.id;
+    $.ajax({
+      url: url,
+      type: 'DELETE',
+      success: function(res) {
+        if (cb)
+          cb(true, res);
+      },
+      error: function(xhr, status, err) {
+        // if there is an error, remove any login token
+        delete localStorage.token;
+        if (cb)
+          cb(false, status);
+      }
+    });
+  },
   // update an item, call the callback when complete
   updateItem: function(item, cb) {
     var url = "/api/items/" + item.id;
@@ -88,25 +107,7 @@ var api = {
       }
     });
   },
-  // delete an item, call the callback when complete
-  deleteItem: function(item, cb) {
-    var url = "/api/items/" + item.id;
-    $.ajax({
-      url: url,
-      type: 'DELETE',
-      headers: {'Authorization': localStorage.token},
-      success: function(res) {
-        if (cb)
-          cb(true, res);
-      },
-      error: function(xhr, status, err) {
-        // if there is an error, remove any login token
-        delete localStorage.token;
-        if (cb)
-          cb(false, status);
-      }
-    });
-  },
+
 
   addTournament: function(title1, data, cb) {
     var url = "/api/tournaments";

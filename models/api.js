@@ -142,31 +142,11 @@ app.put('/api/items/:item_id', function (req,res) {
     });
 });
 
-// delete an item
-app.delete('/api/items/:item_id', function (req,res) {
-    // validate the supplied token
-    user = User.verifyToken(req.headers.authorization, function(user) {
-        if (user) {
-            // if the token is valid, then find the requested item
-            Item.findByIdAndRemove(req.params.item_id, function(err,item) {
-		if (err) {
-		    res.sendStatus(403);
-		    return;
-		}
-                res.sendStatus(200);
-            });
-        } else {
-            res.sendStatus(403);
-        }
-    });
-});
+
 
 // add an item
 app.post('/api/ideas', function (req,res) {
-<<<<<<< HEAD
 
-=======
->>>>>>> 579e15a02222aafb3dd1205fc92bd4873f4f6bdc
     Idea.create({title:req.body.idea.title,text:req.body.idea.text,index:req.body.index}, function(err,item) {
     if (err) {
         res.sendStatus(403);
@@ -189,15 +169,28 @@ app.get('/api/ideas', function (req,res) {
 
 });
 
+// delete an idea
+app.delete('/api/ideas/:idea_id', function (req,res) {
+
+            // if the token is valid, then find the requested item
+            console.log("here");
+            Idea.findByIdAndRemove(req.params.idea_id, function(err,idea) {
+        if (err) {
+            res.sendStatus(403);
+            return;
+        }
+            res.sendStatus(200);
+
+    });
+});
+
 app.post('/api/tournaments/', function (req,res) {
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     var body = req.body;
     console.log("BODY: " );
     console.log(body);
 
-=======
->>>>>>> 579e15a02222aafb3dd1205fc92bd4873f4f6bdc
+
     user = User.verifyToken(req.headers.authorization, function(user) {
         if (user) {
             console.log(req.body);

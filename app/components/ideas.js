@@ -21,7 +21,19 @@ var backButtonStyle = {
   visibility: 'hidden'
 }
 
+var ideaArray = [];
+var ideaIndex = 0;
+
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
+
 function displayText(index) {
+
+  ideaIndex = index;
 
   console.log(index);
   console.log(ideaArray);
@@ -29,6 +41,7 @@ function displayText(index) {
   document.getElementById("postButton").style.visibility="hidden";  
   document.getElementById("idealist").style.visibility="hidden";  
   document.getElementById("backButton").style.visibility="visible";  
+  document.getElementById("deleteButton").style.visibility="visible";  
 
   var header = document.createElement('h1');
   var headerText = document.createTextNode(ideaArray[index-1].title);
@@ -56,7 +69,6 @@ function displayText(index) {
   document.getElementById("textBody").appendChild(element);
 }
 
-var ideaArray = [];
 
 var Ideas = React.createClass({
   getInitialState() {
@@ -80,6 +92,9 @@ var Ideas = React.createClass({
         ideaArray = data.ideas;
         console.log(ideaArray);
 
+        var idealist = document.getElementById("idealist");
+        var para = document.createElement("p");
+        idealist.appendChild(para);
         var i;
       for(i = 0; i < ideaArray.length; i++) {
 
@@ -89,37 +104,23 @@ var Ideas = React.createClass({
   },
 
   addIdea: function(event) {
-    // prevent default browser submit
-    //event.preventDefault();
-    // get data from form
+
     var title = this.refs.ideaTitle.value;
     var text = this.refs.ideaText.value;
     if (!title || !text) {
       return;
     }
     // call API to add item, and reload once added
-
-
-    var json = {"title":title, "text":text, "index":ideaArray.length+1};
-
-    ideaArray.push(json);
-
-    var element = document.createElement('a');
-    var textElement = document.createTextNode(title);
-    element.appendChild(textElement);
-    element.setAttribute("class", "list-group-item");
     var index = ideaArray.length;
-    console.log(index);
-    element.setAttribute("index", index);
-    element.addEventListener("click", function() {
-      displayText(element.getAttribute("index"));
-    });
-    document.getElementById("idealist").appendChild(element);
-
-    this.props.close;
     api.addIdea(title, text, index, this.props.reload);
-    //this.refs.ideaTitle.value = '';
-    //this.refs.ideaText.value = '';
+
+    var idealist = document.getElementById("idealist");
+    while(idealist.firstChild) {
+      idealist.removeChild(idealist.firstChild);
+    }
+
+    api.getIdeas(this.listSet);
+
   },
 
   // when the component loads, get the list items
@@ -139,27 +140,13 @@ var Ideas = React.createClass({
   },
 
   componentDidMount: function() {
-    //api.getIdeas();
-
-    //var i;
-    //for(i = 0; i < ideaArray.length; i++) {
-
-     // this.addInitialIdea(ideaArray[i].title, ideaArray[i].text, ideaArray[i].index);
 
     api.getIdeas(this.listSet);
 
-    
   },
 
     // reload the list of items
   reload: function() {
-    //api.getIdeas();
-
-    //var i;
-    //for(i = 0; i < ideaArray.length; i++) {
-
-    //  this.addInitialIdea(ideaArray[i].title, ideaArray[i].text, ideaArray[i].index);
-    //}
 
     api.getIdeas(this.listSet);
 
@@ -187,6 +174,23 @@ var Ideas = React.createClass({
   document.getElementById("postButton").style.visibility="visible";  
   document.getElementById("idealist").style.visibility="visible";  
   document.getElementById("backButton").style.visibility="hidden";  
+  document.getElementById("deleteButton").style.visibility="hidden";  
+  },
+
+  removeIdea: function() {
+
+    api.deleteIdea(ideaArray[ideaIndex-1], null);
+    ideaArray.splice(ideaIndex-1, 1);
+    console.log(ideaArray);
+
+
+    var idealist = document.getElementById("idealist");
+    while(idealist.firstChild) {
+      idealist.removeChild(idealist.firstChild);
+    }
+
+    api.getIdeas(this.listSet);
+    this.goBack();
   },
 
   onClick: function(){
@@ -218,12 +222,21 @@ var Ideas = React.createClass({
         Back
         </Button>
 
+        <Button
+        id="deleteButton"
+        bsStyle="primary"
+        bsSize="large"
+        style={backButtonStyle}
+        onClick={this.removeIdea}
+        >
+        Delete
+        </Button>
+
       <div id="textBody">
 
       </div>
 
       <div className="list-group" id="idealist">
-      <p></p>
       
       </div>
 
@@ -259,13 +272,5 @@ var Ideas = React.createClass({
     );
   }
 }); 
-
-/*var postModal = React.createClass({
-  render() {
-    return (
-
-    );
-  }
-});*/
 
 module.exports = Ideas;

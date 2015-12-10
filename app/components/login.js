@@ -2,8 +2,8 @@ var React = require("react");
 
 var auth = require("./auth.js");
 
-var Login = React.createClass({
 
+var Login = React.createClass({
 
 
   // initial state
@@ -29,6 +29,7 @@ var Login = React.createClass({
     }
     // login via API
     auth.login(username, password, function(loggedIn) {
+
       // login callback
       if (!loggedIn) {
         window.alert("failure");
@@ -45,7 +46,7 @@ var Login = React.createClass({
         <form role="form">
           <div className="col-md-offset-5 col-md-3">
             <div className="form-login">
-              <h4>Thou mayest login if thou desirest</h4>
+              <h4>Login to save your data!</h4>
                 <input type="text" ref="username" autoFocus={true} className="form-control input-sm chat-input" placeholder="username" />
               <br/>
               <input type="password" ref="password" className="form-control input-sm chat-input" placeholder="password" />

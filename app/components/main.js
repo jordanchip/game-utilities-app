@@ -17,6 +17,7 @@ var Scoreboard = require("./scoreboard.js");
 var Tournament = require("./tournament.js");
 var Dice = require("./dice.js");
 var api = require('./api.js');
+var Logout = require("./logout.js");
 
 // Run the routes
 var routes = (
@@ -27,6 +28,7 @@ var routes = (
           <Route name="scoreboard" path="/scoreboard" component={Scoreboard} />
           <Route name="tournament" path="/tournament" component={Tournament} />
           <Route name="login" path="/login" component={Login} />
+          <Route name="logout" path="/logout" component={Logout} />
           <Route name="register" path="/register" component={Register} />
           <Route name="home" path="/home" component={Home}/>
         </Route>

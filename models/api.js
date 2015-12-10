@@ -18,7 +18,6 @@ app.use(bodyParser.urlencoded({
 
 // register a user
 app.post('/api/users/register', function (req, res) {
-    console.log('Registering user');
     // find or create the user with the given username
     User.findOrCreate({username: req.body.username}, function(err, user, created) {
         if (created) {
@@ -188,7 +187,6 @@ app.get('/api/ideas', function (req,res) {
 app.post('/api/tournaments/', function (req,res) {
     user = User.verifyToken(req.headers.authorization, function(user) {
         if (user) {
-            console.log(req.body);
             // if the token is valid, create the item for the user
 
             Tournament.update(

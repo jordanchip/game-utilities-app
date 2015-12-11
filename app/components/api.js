@@ -174,26 +174,41 @@ var api = {
       }
     })
   },
-  updateItem: function(item, cb) {
-    var url = "/api/items/" + item.id;
+
+  getScoreboard: function(cb) {
+    var url = "/api/scoreboard";
+    $.ajax({
+      url: url,
+      type: 'GET',
+      success: function(res) {
+        if (cb)
+          cb(true, res);
+      },
+      error: function(xhr, status, err) {
+        if (cb)
+          cb(false, status);
+      }
+    });
+  },
+
+  updateScoreboard: function(item, cb) {
+    var url = "/api/scoreboard/"+item.player;
     $.ajax({
       url: url,
       contentType: 'application/json',
       data: JSON.stringify({
         item: {
-          title: item.title,
-          completed: item.completed
+          name: item.player,
+          score: item.score
         }
       }),
       type: 'PUT',
-      headers: {'Authorization': localStorage.token},
       success: function(res) {
         if (cb)
           cb(true, res);
       },
       error: function(xhr, status, err) {
         // if there is any error, remove any login token
-        delete localStorage.token;
         if (cb)
           cb(false, status);
       }

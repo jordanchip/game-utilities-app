@@ -17,11 +17,12 @@ var textStyle = {
 
 
 
-var scoreArray = [{"player":"Jon", "points":"0"},
+/*var scoreArray = [{"player":"Jon", "points":"0"},
                   {"player":"Grant", "points":"0"},
                   {"player":"Jordan", "points":"0"},
                   {"player":"Joe", "points":"0"},
-                  ];
+                  ];*/
+var scoreArray = [];                  
                   
 var removeIndex = 0;
 
@@ -30,8 +31,8 @@ function updatePoints(newPoints, value) {
   if(!newPoints)
     return;
 
-  api.updateScoreboard(scoreArray[value]);
   scoreArray[value].points=newPoints;
+  api.updateScoreboard(scoreArray[value]);
 
   var pointIndex="point"+value;
 
@@ -67,10 +68,23 @@ function removeElement(value) {
 
 }
 
-var Scoreboard = React.createClass({
 
+var Scoreboard = React.createClass({
+  reload: function() {
+    scoreArray=[];
+    api.getScoreboard(function(success,res) {        
+    if (success) {          
+      var obj = res.data;
+      var i;
+      for(i=0;i<obj.length;i++){
+        var scoreElement = {"player":obj[i].playerName, "points":obj[i].score};
+        scoreArray.push(scoreElement);
+        }
+      }
+    });
+  },
   getInitialState() {
-    //ideas: [],
+    this.reload();
     return { showModal: false };
   },
 
@@ -83,18 +97,15 @@ var Scoreboard = React.createClass({
   },
 
   setList: function() {
-
-
     var i;
+    reload();
     for(i=0; i < scoreArray.length; i++) {
-
       this.addInitialElement(scoreArray[i].player, scoreArray[i].points, i);
     }
 
   },
 
   wipeScreen: function() {
-
     var board = document.getElementById("board");
     while(board.firstChild) {
       board.removeChild(board.firstChild);
@@ -104,9 +115,9 @@ var Scoreboard = React.createClass({
 
     reset: function() {
 
-    scoreArray = [];
+      scoreArray = [];
 
-    this.wipeScreen();
+      this.wipeScreen();
 
     },
 
@@ -123,7 +134,6 @@ var Scoreboard = React.createClass({
 
     if(!name)
       return;
-
     var scoreTable = document.getElementById("board");
     var tr = document.createElement("tr");
     var td = document.createElement("td");
@@ -198,12 +208,8 @@ var Scoreboard = React.createClass({
 
   },
 
-    // reload the list of items
-  reload: function() {
+    
 
-    this.setList();
-
-  },
 
   addPlayer: function() {
 
@@ -226,9 +232,8 @@ var Scoreboard = React.createClass({
 
 
   render: function() {
-    return (
+      return (
       <div className="table-responsive">
-
       <div className="btn-toolbar">
         <Button
           id="addButton"

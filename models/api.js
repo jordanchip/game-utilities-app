@@ -235,10 +235,49 @@ app.post('/api/scoreboard/', function (req,res) {
     console.log("BODY:-- " );
     console.log(body.data);
     Scoreboard.create({playerName:req.body.data.playerName,score:'0'}, function(err,item) {
+        if (err) {
+            res.sendStatus(403);
+            return;
+        }
+    });
+});
+
+app.get('/api/scoreboard', function (req,res) {
+    Scoreboard.find(function(err, data) {
+        if (err) {
+           res.sendStatus(403);
+           return;
+        }
+        // return value is the list of items as JSON
+        console.log(data);
+        //res.json({playerName:data.playerName, score:data.score});
+        res.json({data:data});
+        //console.log(res);
+    });
+});
+
+// update an item
+app.put('/api/scoreboard/:name', function (req,res) {
+    Scoreboard.find({playerName: req.body.name}, function(err,item) {
+    console(item);
+
     if (err) {
         res.sendStatus(403);
         return;
     }
+    res.json({playerName:item.playerName, score:item.socre});
     });
-    
+});
+
+
+// delete an idea
+app.delete('/api/scoreboard', function (req,res) {
+        Scoreboard.deleteMany({}, function(err,idea) {
+        if (err) {
+            res.sendStatus(403);
+            return;
+        }
+            res.sendStatus(200);
+
+    });
 });

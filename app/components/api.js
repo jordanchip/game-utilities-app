@@ -193,13 +193,14 @@ var api = {
 
   updateScoreboard: function(item, cb) {
     var url = "/api/scoreboard/"+item.player;
+    console.log(url);
     $.ajax({
       url: url,
       contentType: 'application/json',
       data: JSON.stringify({
         item: {
           name: item.player,
-          score: item.score
+          score: item.points
         }
       }),
       type: 'PUT',
@@ -209,6 +210,23 @@ var api = {
       },
       error: function(xhr, status, err) {
         // if there is any error, remove any login token
+        if (cb)
+          cb(false, status);
+      }
+    });
+  },
+    deleteScore: function(cb) {
+    var url = "/api/scoreboard/";
+    $.ajax({
+      url: url,
+      type: 'DELETE',
+      success: function(res) {
+        if (cb)
+          cb(true, res);
+      },
+      error: function(xhr, status, err) {
+        // if there is an error, remove any login token
+        delete localStorage.token;
         if (cb)
           cb(false, status);
       }

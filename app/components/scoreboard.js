@@ -70,21 +70,8 @@ function removeElement(value) {
 
 
 var Scoreboard = React.createClass({
-  reload: function() {
-    scoreArray=[];
-    api.getScoreboard(function(success,res) {        
-    if (success) {          
-      var obj = res.data;
-      var i;
-      for(i=0;i<obj.length;i++){
-        var scoreElement = {"player":obj[i].playerName, "points":obj[i].score};
-        scoreArray.push(scoreElement);
-        }
-      }
-    });
-  },
+
   getInitialState() {
-    this.reload();
     return { showModal: false };
   },
 
@@ -98,7 +85,6 @@ var Scoreboard = React.createClass({
 
   setList: function() {
     var i;
-    reload();
     for(i=0; i < scoreArray.length; i++) {
       this.addInitialElement(scoreArray[i].player, scoreArray[i].points, i);
     }
@@ -116,6 +102,8 @@ var Scoreboard = React.createClass({
     reset: function() {
 
       scoreArray = [];
+
+      api.deleteScore();
 
       this.wipeScreen();
 
@@ -202,10 +190,19 @@ var Scoreboard = React.createClass({
   },
 
   componentDidMount: function() {
-
-
+    scoreArray=[];
+    api.getScoreboard(function(success,res,setList) {        
+    if (success) {          
+      var obj = res.data;
+      var i;
+      for(i=0;i<obj.length;i++){
+        var scoreElement = {"player":obj[i].playerName, "points":obj[i].score};
+        scoreArray.push(scoreElement);
+        }
+      }
+    });
+    console.log(scoreArray);
     this.setList();
-
   },
 
     
@@ -232,6 +229,7 @@ var Scoreboard = React.createClass({
 
 
   render: function() {
+    this.componentDidMount();
       return (
       <div className="table-responsive">
       <div className="btn-toolbar">

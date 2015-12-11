@@ -256,23 +256,24 @@ app.get('/api/scoreboard', function (req,res) {
     });
 });
 
-// update an item
+// update a score
 app.put('/api/scoreboard/:name', function (req,res) {
-    Scoreboard.find({playerName: req.body.name}, function(err,item) {
-    console(item);
-
-    if (err) {
-        res.sendStatus(403);
-        return;
-    }
-    res.json({playerName:item.playerName, score:item.socre});
+   
+    Scoreboard.find({playerName:req.body.item.name}, function(err,item) {
+        if (err) {
+            res.sendStatus(403);
+            return;
+        }            
+        item.playerName = req.body.item.name;
+        item.score = req.body.item.points;
     });
 });
 
 
 // delete an idea
 app.delete('/api/scoreboard', function (req,res) {
-        Scoreboard.deleteMany({}, function(err,idea) {
+    console.log('deleteit');
+        Scoreboard.remove({}, function(err,idea) {
         if (err) {
             res.sendStatus(403);
             return;

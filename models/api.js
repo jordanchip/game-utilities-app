@@ -3,6 +3,7 @@ var User = require('./user.js');
 //var Item = require('./item.js');
 var Idea = require('./idea.js');
 var Tournament = require('./tournament.js');
+var Scoreboard = require('./scoreboard');
 var mongoose = require('mongoose');
 
 // setup body parser
@@ -226,4 +227,18 @@ app.get('/api/tournaments/', function (req, res) {
             res.sendStatus(403);
         }
     });
+});
+
+app.post('/api/scoreboard/', function (req,res) {
+
+    var body = req.body;
+    console.log("BODY:-- " );
+    console.log(body.data);
+    Scoreboard.create({playerName:req.body.data.playerName,score:'0'}, function(err,item) {
+    if (err) {
+        res.sendStatus(403);
+        return;
+    }
+    });
+    
 });

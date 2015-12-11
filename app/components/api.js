@@ -147,9 +147,60 @@ var api = {
           cb(false, status);
       }
     })
-  }
+  },
 
+  addPlayer: function(data, cb){
+    console.log('name is');
+    console.log(data);
+    var url = "/api/scoreboard";
+    $.ajax({
+      url: url,
+      contentType: 'application/json',
+      data: JSON.stringify({
+        data: {
+          'playerName': data,
+        }
+      }),
+      type: 'POST',
+      success: function(res) {
+        if (cb)
+          cb(true, res);
+      },
+      error: function(xhr, status, err) {
+        // if there is an error, remove the login token
+        delete localStorage.token;
+        if (cb)
+          cb(false, status);
+      }
+    })
+  },
+  updateItem: function(item, cb) {
+    var url = "/api/items/" + item.id;
+    $.ajax({
+      url: url,
+      contentType: 'application/json',
+      data: JSON.stringify({
+        item: {
+          title: item.title,
+          completed: item.completed
+        }
+      }),
+      type: 'PUT',
+      headers: {'Authorization': localStorage.token},
+      success: function(res) {
+        if (cb)
+          cb(true, res);
+      },
+      error: function(xhr, status, err) {
+        // if there is any error, remove any login token
+        delete localStorage.token;
+        if (cb)
+          cb(false, status);
+      }
+    });
+  }
 };
+
 // data: JSON.stringify({
 //         item: {
 //           title: title1,

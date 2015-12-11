@@ -5,6 +5,7 @@ var Tooltip = require('react-bootstrap/lib/Tooltip');
 var Button = require('react-bootstrap/lib/Button');
 var Modal = require('react-bootstrap/lib/Modal');
 var OverlayTrigger = require('react-bootstrap/lib/OverlayTrigger');
+var api = require('./api.js');
 
 var textStyle = {
 
@@ -29,6 +30,7 @@ function updatePoints(newPoints, value) {
   if(!newPoints)
     return;
 
+  api.updateScoreboard(scoreArray[value]);
   scoreArray[value].points=newPoints;
 
   var pointIndex="point"+value;
@@ -211,7 +213,8 @@ var Scoreboard = React.createClass({
       return;
 
     var scoreElement = {"player":name, "points":"0"};
-
+    console.log(name);
+    api.addPlayer(name);
     scoreArray.push(scoreElement);
 
     this.wipeScreen();
